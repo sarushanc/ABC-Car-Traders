@@ -1,6 +1,6 @@
 ﻿namespace ABC_Car_Traders
 {
-    partial class AddCar
+    partial class CarDialog
     {
         /// <summary>
         /// Required designer variable.
@@ -93,7 +93,7 @@
             this.addButton.Name = "addButton";
             this.addButton.Size = new System.Drawing.Size(174, 32);
             this.addButton.TabIndex = 6;
-            this.addButton.Text = "ADD";
+            this.addButton.Text = "SAVE";
             this.addButton.UseVisualStyleBackColor = true;
             this.addButton.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -107,11 +107,11 @@
             this.clearButton.UseVisualStyleBackColor = true;
             this.clearButton.Click += new System.EventHandler(this.clearButton_Click);
             // 
-            // AddCar
+            // CarDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(576, 450);
+            this.ClientSize = new System.Drawing.Size(576, 256);
             this.Controls.Add(this.clearButton);
             this.Controls.Add(this.addButton);
             this.Controls.Add(this.textPrice);
@@ -120,9 +120,9 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Name = "AddCar";
-            this.Text = "Add Car";
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Name = "CarDialog";
+            this.Text = "Add/ Edit Car";
             this.ResumeLayout(false);
             this.PerformLayout();
 
