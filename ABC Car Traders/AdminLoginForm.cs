@@ -28,9 +28,9 @@ namespace ABC_Car_Traders
             if (admin.Login(textBox1.Text, textBox2.Text))
             {
                 MessageBox.Show("Login successful");
-                ManageCarDetailsForm manageCarDetailsForm = new ManageCarDetailsForm();
-                manageCarDetailsForm.Show();
-                this.Hide(); // Hide the login form
+                AdminDashboard adminDashboardForm = new AdminDashboard();
+                adminDashboardForm.Show();
+                this.Hide(); 
             }
             else
             {

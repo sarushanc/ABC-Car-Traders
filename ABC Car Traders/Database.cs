@@ -7,7 +7,6 @@ namespace ABC_Car_Traders
 {
     public class Database
     {
-        // Connection string for SQL Server
         private string connectionString = @"Data Source=SALES-PC-DGM\SQLEXPRESS;Initial Catalog=car_trader;Integrated Security=True;";
 
         public Database()
@@ -21,6 +20,7 @@ namespace ABC_Car_Traders
             {
                 connection.Open();
 
+                // Create Cars table
                 string createCarTable = @"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Cars' AND xtype='U')
                                           CREATE TABLE Cars (
                                             Id INT IDENTITY(1,1) PRIMARY KEY,
@@ -30,17 +30,59 @@ namespace ABC_Car_Traders
                 var command = new SqlCommand(createCarTable, connection);
                 command.ExecuteNonQuery();
 
+                // Create Customers table
                 string createCustomerTable = @"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Customers' AND xtype='U')
                                                 CREATE TABLE Customers (
                                                 Id INT IDENTITY(1,1) PRIMARY KEY,
                                                 Name NVARCHAR(100),
                                                 Email NVARCHAR(100),
+                                                Phone NVARCHAR(20),
                                                 Password NVARCHAR(100))";
                 command = new SqlCommand(createCustomerTable, connection);
+                command.ExecuteNonQuery();
+
+                // Create CarParts table
+                string createCarPartsTable = @"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CarParts' AND xtype='U')
+                                               CREATE TABLE CarParts (
+                                               Id INT IDENTITY(1,1) PRIMARY KEY,
+                                               PartName NVARCHAR(100),
+                                               Price DECIMAL(18,2))";
+                command = new SqlCommand(createCarPartsTable, connection);
+                command.ExecuteNonQuery();
+
+                // Create Admins table
+                string createAdminsTable = @"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Admins' AND xtype='U')
+                                             CREATE TABLE Admins (
+                                             Id INT IDENTITY(1,1) PRIMARY KEY,
+                                             UserName NVARCHAR(100),
+                                             Password NVARCHAR(100))";
+                command = new SqlCommand(createAdminsTable, connection);
+                command.ExecuteNonQuery();
+
+                // Create Orders table
+                string createOrdersTable = @"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Orders' AND xtype='U')
+                                             CREATE TABLE Orders (
+                                             Id INT IDENTITY(1,1) PRIMARY KEY,
+                                             CustomerId INT FOREIGN KEY REFERENCES Customers(Id),
+                                             OrderDate DATETIME,
+                                             Status NVARCHAR(50))";
+                command = new SqlCommand(createOrdersTable, connection);
+                command.ExecuteNonQuery();
+
+                // Create OrderDetails table
+                string createOrderDetailsTable = @"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='OrderDetails' AND xtype='U')
+                                                   CREATE TABLE OrderDetails (
+                                                   Id INT IDENTITY(1,1) PRIMARY KEY,
+                                                   OrderId INT FOREIGN KEY REFERENCES Orders(Id),
+                                                   CarId INT FOREIGN KEY REFERENCES Cars(Id),
+                                                   PartId INT FOREIGN KEY REFERENCES CarParts(Id),
+                                                   Quantity INT)";
+                command = new SqlCommand(createOrderDetailsTable, connection);
                 command.ExecuteNonQuery();
             }
         }
 
+        // ------------------ CRUD Operations for Cars ------------------
         public void AddCar(Car car)
         {
             using (var connection = new SqlConnection(connectionString))
@@ -70,48 +112,30 @@ namespace ABC_Car_Traders
         public Car GetCarById(int carId)
         {
             Car car = null;
-
-            try
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                // Establish a connection to the database
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                connection.Open();
+                string query = "SELECT Id, Make, Model, Price FROM Cars WHERE Id = @CarId";
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    connection.Open();
-
-                    // Create the SQL query to get the car by its ID
-                    string query = "SELECT Id, Make, Model, Price FROM Cars WHERE Id = @CarId";
-
-                    // Create the SQL command
-                    using (SqlCommand command = new SqlCommand(query, connection))
+                    command.Parameters.AddWithValue("@CarId", carId);
+                    using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        // Set the parameter value
-                        command.Parameters.AddWithValue("@CarId", carId);
-
-                        // Execute the command and read the result
-                        using (SqlDataReader reader = command.ExecuteReader())
+                        if (reader.Read())
                         {
-                            if (reader.Read())
+                            car = new Car
                             {
-                                car = new Car
-                                {
-                                    Id = reader.GetInt32(0),
-                                    Make = reader.GetString(1),
-                                    Model = reader.GetString(2),
-                                    Price = reader.GetDecimal(3)
-                                };
-                            }
+                                Id = reader.GetInt32(0),
+                                Make = reader.GetString(1),
+                                Model = reader.GetString(2),
+                                Price = reader.GetDecimal(3)
+                            };
                         }
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("An error occurred while retrieving the car details. Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
             return car;
         }
-
 
         public void UpdateCar(Car car)
         {
@@ -127,5 +151,322 @@ namespace ABC_Car_Traders
                 command.ExecuteNonQuery();
             }
         }
+
+        // ------------------ CRUD Operations for Customers ------------------
+        public void AddCustomer(Customer customer)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string insertCustomer = @"INSERT INTO Customers (Name, Email, Phone, Password) VALUES (@Name, @Email, @Phone, @Password)";
+                var command = new SqlCommand(insertCustomer, connection);
+                command.Parameters.AddWithValue("@Name", customer.Name);
+                command.Parameters.AddWithValue("@Email", customer.Email);
+                command.Parameters.AddWithValue("@Phone", customer.Phone);
+                command.Parameters.AddWithValue("@Password", customer.Password);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public void DeleteCustomer(int customerId)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string deleteCustomer = @"DELETE FROM Customers WHERE Id = @Id";
+                var command = new SqlCommand(deleteCustomer, connection);
+                command.Parameters.AddWithValue("@Id", customerId);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public Customer GetCustomerById(int customerId)
+        {
+            Customer customer = null;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "SELECT Id, Name, Email, Phone, Password FROM Customers WHERE Id = @CustomerId";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@CustomerId", customerId);
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            customer = new Customer
+                            {
+                                Id = reader.GetInt32(0),
+                                Name = reader.GetString(1),
+                                Email = reader.GetString(2),
+                                Phone = reader.GetString(3),
+                                Password = reader.GetString(4)
+                            };
+                        }
+                    }
+                }
+            }
+            return customer;
+        }
+
+        public void UpdateCustomer(Customer customer)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string updateCustomer = @"UPDATE Customers SET Name = @Name, Email = @Email, Phone = @Phone, Password = @Password WHERE Id = @Id";
+                var command = new SqlCommand(updateCustomer, connection);
+                command.Parameters.AddWithValue("@Name", customer.Name);
+                command.Parameters.AddWithValue("@Email", customer.Email);
+                command.Parameters.AddWithValue("@Phone", customer.Phone);
+                command.Parameters.AddWithValue("@Password", customer.Password);
+                command.Parameters.AddWithValue("@Id", customer.Id);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        // ------------------ CRUD Operations for CarParts ------------------
+        public void AddCarPart(CarPart carPart)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string insertCarPart = @"INSERT INTO CarParts (PartName, Price) VALUES (@PartName, @Price)";
+                var command = new SqlCommand(insertCarPart, connection);
+                command.Parameters.AddWithValue("@PartName", carPart.PartName);
+                command.Parameters.AddWithValue("@Price", carPart.Price);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public void DeleteCarPart(int partId)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string deleteCarPart = @"DELETE FROM CarParts WHERE Id = @Id";
+                var command = new SqlCommand(deleteCarPart, connection);
+                command.Parameters.AddWithValue("@Id", partId);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public CarPart GetCarPartById(int partId)
+        {
+            CarPart carPart = null;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "SELECT Id, PartName, Price FROM CarParts WHERE Id = @PartId";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@PartId", partId);
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            carPart = new CarPart
+                            {
+                                Id = reader.GetInt32(0),
+                                PartName = reader.GetString(1),
+                                Price = reader.GetDecimal(2)
+                            };
+                        }
+                    }
+                }
+            }
+            return carPart;
+        }
+
+        public void UpdateCarPart(CarPart carPart)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string updateCarPart = @"UPDATE CarParts SET PartName = @PartName, Price = @Price WHERE Id = @Id";
+                var command = new SqlCommand(updateCarPart, connection);
+                command.Parameters.AddWithValue("@PartName", carPart.PartName);
+                command.Parameters.AddWithValue("@Price", carPart.Price);
+                command.Parameters.AddWithValue("@Id", carPart.Id);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        // ------------------ CRUD Operations for Orders ------------------
+        public void AddOrder(Order order)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string insertOrder = @"INSERT INTO Orders (CustomerId, OrderDate, Status) VALUES (@CustomerId, @OrderDate, @Status)";
+                var command = new SqlCommand(insertOrder, connection);
+                command.Parameters.AddWithValue("@CustomerId", order.CustomerId);
+                command.Parameters.AddWithValue("@OrderDate", order.OrderDate);
+                command.Parameters.AddWithValue("@Status", order.Status);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public void DeleteOrder(int orderId)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string deleteOrder = @"DELETE FROM Orders WHERE Id = @Id";
+                var command = new SqlCommand(deleteOrder, connection);
+                command.Parameters.AddWithValue("@Id", orderId);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public Order GetOrderById(int orderId)
+        {
+            Order order = null;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "SELECT Id, CustomerId, OrderDate, Status FROM Orders WHERE Id = @OrderId";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@OrderId", orderId);
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            order = new Order
+                            {
+                                Id = reader.GetInt32(0),
+                                CustomerId = reader.GetInt32(1),
+                                OrderDate = reader.GetDateTime(2),
+                                Status = reader.GetString(3)
+                            };
+                        }
+                    }
+                }
+            }
+            return order;
+        }
+
+        public void UpdateOrder(Order order)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string updateOrder = @"UPDATE Orders SET CustomerId = @CustomerId, OrderDate = @OrderDate, Status = @Status WHERE Id = @Id";
+                var command = new SqlCommand(updateOrder, connection);
+                command.Parameters.AddWithValue("@CustomerId", order.CustomerId);
+                command.Parameters.AddWithValue("@OrderDate", order.OrderDate);
+                command.Parameters.AddWithValue("@Status", order.Status);
+                command.Parameters.AddWithValue("@Id", order.Id);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        // ------------------ CRUD Operations for OrderDetails ------------------
+        public void AddOrderDetail(OrderDetail orderDetail)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string insertOrderDetail = @"INSERT INTO OrderDetails (OrderId, CarId, PartId, Quantity) VALUES (@OrderId, @CarId, @PartId, @Quantity)";
+                var command = new SqlCommand(insertOrderDetail, connection);
+                command.Parameters.AddWithValue("@OrderId", orderDetail.OrderId);
+                command.Parameters.AddWithValue("@CarId", orderDetail.CarId);
+                command.Parameters.AddWithValue("@PartId", orderDetail.PartId);
+                command.Parameters.AddWithValue("@Quantity", orderDetail.Quantity);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public void DeleteOrderDetail(int orderDetailId)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string deleteOrderDetail = @"DELETE FROM OrderDetails WHERE Id = @Id";
+                var command = new SqlCommand(deleteOrderDetail, connection);
+                command.Parameters.AddWithValue("@Id", orderDetailId);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public OrderDetail GetOrderDetailById(int orderDetailId)
+        {
+            OrderDetail orderDetail = null;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "SELECT Id, OrderId, CarId, PartId, Quantity FROM OrderDetails WHERE Id = @OrderDetailId";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@OrderDetailId", orderDetailId);
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            orderDetail = new OrderDetail
+                            {
+                                Id = reader.GetInt32(0),
+                                OrderId = reader.GetInt32(1),
+                                CarId = reader.GetInt32(2),
+                                PartId = reader.GetInt32(3),
+                                Quantity = reader.GetInt32(4)
+                            };
+                        }
+                    }
+                }
+            }
+            return orderDetail;
+        }
+
+        public void UpdateOrderDetail(OrderDetail orderDetail)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string updateOrderDetail = @"UPDATE OrderDetails SET OrderId = @OrderId, CarId = @CarId, PartId = @PartId, Quantity = @Quantity WHERE Id = @Id";
+                var command = new SqlCommand(updateOrderDetail, connection);
+                command.Parameters.AddWithValue("@OrderId", orderDetail.OrderId);
+                command.Parameters.AddWithValue("@CarId", orderDetail.CarId);
+                command.Parameters.AddWithValue("@PartId", orderDetail.PartId);
+                command.Parameters.AddWithValue("@Quantity", orderDetail.Quantity);
+                command.Parameters.AddWithValue("@Id", orderDetail.Id);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public Customer GetCustomerByEmailAndPassword(string email, string password)
+        {
+            Customer customer = null;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "SELECT Id, Name, Email, Phone, Password FROM Customers WHERE Email = @Email AND Password = @Password";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Email", email);
+                    command.Parameters.AddWithValue("@Password", password);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            customer = new Customer
+                            {
+                                Id = reader.GetInt32(0),
+                                Name = reader.GetString(1),
+                                Email = reader.GetString(2),
+                                Phone = reader.GetString(3),
+                                Password = reader.GetString(4)
+                            };
+                        }
+                    }
+                }
+            }
+
+            return customer;
+        }
+
     }
 }

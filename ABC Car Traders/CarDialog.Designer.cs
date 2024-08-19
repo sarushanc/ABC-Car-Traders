@@ -123,6 +123,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "CarDialog";
             this.Text = "Add/ Edit Car";
+            this.Load += new System.EventHandler(this.CarDialog_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

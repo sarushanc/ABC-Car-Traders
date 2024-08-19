@@ -12,9 +12,9 @@ namespace ABC_Car_Traders
 {
     public partial class CarDialog : Form
     {
-        public string make { get{ return textMake.Text; } }
-        public string model { get{ return textModel.Text; } }
-        public string price { get{ return textPrice.Text; } }
+        public string make { get { return textMake.Text; } }
+        public string model { get { return textModel.Text; } }
+        public string price { get { return textPrice.Text; } }
 
         public CarDialog()
         {
@@ -58,6 +58,11 @@ namespace ABC_Car_Traders
         {
             DialogResult = DialogResult.Cancel;
             Close();
+        }
+
+        private void CarDialog_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

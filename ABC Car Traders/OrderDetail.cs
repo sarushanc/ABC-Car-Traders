@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ABC_Car_Traders
 {
-    internal class OrderDetail
+    public class OrderDetail
     {
         public int Id { get; set; }
         public int OrderId { get; set; }
