@@ -112,5 +112,10 @@ namespace ABC_Car_Traders
                 MessageBox.Show("Please select a car part record to edit.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }

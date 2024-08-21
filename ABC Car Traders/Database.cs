@@ -322,13 +322,17 @@ namespace ABC_Car_Traders
         public Order GetOrderById(int orderId)
         {
             Order order = null;
+
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
+
                 string query = "SELECT Id, CustomerId, OrderDate, Status FROM Orders WHERE Id = @OrderId";
+
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@OrderId", orderId);
+
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
                         if (reader.Read())
@@ -344,6 +348,7 @@ namespace ABC_Car_Traders
                     }
                 }
             }
+
             return order;
         }
 
@@ -466,6 +471,117 @@ namespace ABC_Car_Traders
             }
 
             return customer;
+        }
+
+        public List<OrderDisplay> GetOrdersWithCustomerDetails()
+        {
+            var orders = new List<OrderDisplay>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = @"
+            SELECT o.Id, c.Name, o.OrderDate, 
+                   (SELECT SUM(od.Quantity * cp.Price) 
+                    FROM OrderDetails od
+                    JOIN CarParts cp ON od.PartId = cp.Id
+                    WHERE od.OrderId = o.Id) AS Total, 
+                   o.Status
+            FROM Orders o
+            JOIN Customers c ON o.CustomerId = c.Id";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            orders.Add(new OrderDisplay
+                            {
+                                Id = reader.GetInt32(0),
+                                CustomerName = reader.GetString(1),
+                                OrderDate = reader.GetDateTime(2),
+                                Total = reader.IsDBNull(3) ? 0 : reader.GetDecimal(3),
+                                Status = reader.GetString(4)
+                            });
+                        }
+                    }
+                }
+            }
+
+            return orders;
+        }
+
+        public List<Customer> GetCustomers()
+        {
+            List<Customer> customers = new List<Customer>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "SELECT Id, Name FROM Customers"; // Adjust based on your table structure
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            customers.Add(new Customer
+                            {
+                                Id = reader.GetInt32(0),
+                                Name = reader.GetString(1)
+                            });
+                        }
+                    }
+                }
+            }
+
+            return customers;
+        }
+
+        public List<OrderDisplay> GetOrdersWithCustomerDetails(int customerId)
+        {
+            List<OrderDisplay> orders = new List<OrderDisplay>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                // Query to get the orders and their details for a specific customer
+                string query = @"
+            SELECT o.Id, c.Name, o.OrderDate, 
+                   (SELECT SUM(od.Quantity * cp.Price) 
+                    FROM OrderDetails od
+                    JOIN CarParts cp ON od.PartId = cp.Id
+                    WHERE od.OrderId = o.Id) AS Total, 
+                   o.Status
+            FROM Orders o
+            JOIN Customers c ON o.CustomerId = c.Id
+            WHERE o.CustomerId = @CustomerId";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@CustomerId", customerId);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            orders.Add(new OrderDisplay
+                            {
+                                Id = reader.GetInt32(0),
+                                CustomerName = reader.GetString(1),
+                                OrderDate = reader.GetDateTime(2),
+                                Total = reader.IsDBNull(3) ? 0 : reader.GetDecimal(3),
+                                Status = reader.GetString(4)
+                            });
+                        }
+                    }
+                }
+            }
+
+            return orders;
         }
 
     }

@@ -31,8 +31,8 @@ namespace ABC_Car_Traders
         private void buttonorders_Click(object sender, EventArgs e)
         {
             // Assuming there's an OrdersForm you want to show
-            //OrdersForm ordersForm = new OrdersForm(customer); // Pass the customer to filter their orders
-            //ordersForm.Show();
+            OrdersForm ordersForm = new OrdersForm(customer); // Pass the customer to filter their orders
+            ordersForm.Show();
         }
 
         // Button 1 Click - Example: Log Out or Return to Main Menu

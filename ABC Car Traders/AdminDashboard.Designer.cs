@@ -72,8 +72,9 @@
             this.buttonorders.TabIndex = 3;
             this.buttonorders.Text = "ORDERS";
             this.buttonorders.UseVisualStyleBackColor = true;
+            this.buttonorders.Click += new System.EventHandler(this.buttonorders_Click);
             // 
-            // AdiminDashboard
+            // AdminDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -82,7 +83,7 @@
             this.Controls.Add(this.buttonCustomers);
             this.Controls.Add(this.buttonCarParts);
             this.Controls.Add(this.button1);
-            this.Name = "AdiminDashboard";
+            this.Name = "AdminDashboard";
             this.Text = "AdiminDashboard";
             this.ResumeLayout(false);
 

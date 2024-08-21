@@ -34,5 +34,11 @@ namespace ABC_Car_Traders
             CustomersForm customersForm = new CustomersForm();
             customersForm.Show();
         }
+
+        private void buttonorders_Click(object sender, EventArgs e)
+        {
+            OrdersForm ordersForm = new OrdersForm();
+            ordersForm.Show();
+        }
     }
 }

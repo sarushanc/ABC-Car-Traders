@@ -1,6 +1,6 @@
 ﻿namespace ABC_Car_Traders
 {
-    partial class CarPartsForm
+    partial class OrdersForm
     {
         /// <summary>
         /// Required designer variable.
@@ -30,20 +30,20 @@
         {
             this.components = new System.ComponentModel.Container();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.partNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.priceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.aDDRECORDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.eDITRECORDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dELETERECORDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.carPartsBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.car_traderDataSet4 = new ABC_Car_Traders.car_traderDataSet4();
-            this.carPartsTableAdapter = new ABC_Car_Traders.car_traderDataSet4TableAdapters.CarPartsTableAdapter();
+            this.vIEWRECORDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.orderDisplayBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.customerNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.orderDateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.totalDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.statusDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.carPartsBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.car_traderDataSet4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.orderDisplayBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridView1
@@ -52,51 +52,25 @@
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.AutoGenerateColumns = false;
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridView1.CausesValidation = false;
-            this.dataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Id,
-            this.partNameDataGridViewTextBoxColumn,
-            this.priceDataGridViewTextBoxColumn});
+            this.customerNameDataGridViewTextBoxColumn,
+            this.orderDateDataGridViewTextBoxColumn,
+            this.totalDataGridViewTextBoxColumn,
+            this.statusDataGridViewTextBoxColumn});
             this.dataGridView1.ContextMenuStrip = this.contextMenuStrip1;
-            this.dataGridView1.DataSource = this.carPartsBindingSource;
+            this.dataGridView1.DataSource = this.orderDisplayBindingSource;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dataGridView1.RowHeadersWidth = 62;
             this.dataGridView1.RowTemplate.Height = 28;
             this.dataGridView1.Size = new System.Drawing.Size(800, 450);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
-            // 
-            // Id
-            // 
-            this.Id.DataPropertyName = "Id";
-            this.Id.FillWeight = 96.174F;
-            this.Id.HeaderText = "Id";
-            this.Id.MinimumWidth = 8;
-            this.Id.Name = "Id";
-            this.Id.ReadOnly = true;
-            // 
-            // partNameDataGridViewTextBoxColumn
-            // 
-            this.partNameDataGridViewTextBoxColumn.DataPropertyName = "PartName";
-            this.partNameDataGridViewTextBoxColumn.FillWeight = 103.9619F;
-            this.partNameDataGridViewTextBoxColumn.HeaderText = "PartName";
-            this.partNameDataGridViewTextBoxColumn.MinimumWidth = 8;
-            this.partNameDataGridViewTextBoxColumn.Name = "partNameDataGridViewTextBoxColumn";
-            this.partNameDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // priceDataGridViewTextBoxColumn
-            // 
-            this.priceDataGridViewTextBoxColumn.DataPropertyName = "Price";
-            this.priceDataGridViewTextBoxColumn.FillWeight = 99.86414F;
-            this.priceDataGridViewTextBoxColumn.HeaderText = "Price";
-            this.priceDataGridViewTextBoxColumn.MinimumWidth = 8;
-            this.priceDataGridViewTextBoxColumn.Name = "priceDataGridViewTextBoxColumn";
-            this.priceDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // contextMenuStrip1
             // 
@@ -104,9 +78,10 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.aDDRECORDToolStripMenuItem,
             this.eDITRECORDToolStripMenuItem,
-            this.dELETERECORDToolStripMenuItem});
+            this.dELETERECORDToolStripMenuItem,
+            this.vIEWRECORDToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(216, 100);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(216, 132);
             // 
             // aDDRECORDToolStripMenuItem
             // 
@@ -120,57 +95,94 @@
             this.eDITRECORDToolStripMenuItem.Name = "eDITRECORDToolStripMenuItem";
             this.eDITRECORDToolStripMenuItem.Size = new System.Drawing.Size(215, 32);
             this.eDITRECORDToolStripMenuItem.Text = "EDIT RECORD";
-            this.eDITRECORDToolStripMenuItem.Click += new System.EventHandler(this.eDITRECORDToolStripMenuItem_Click_1);
+            this.eDITRECORDToolStripMenuItem.Click += new System.EventHandler(this.eDITRECORDToolStripMenuItem_Click);
             // 
             // dELETERECORDToolStripMenuItem
             // 
             this.dELETERECORDToolStripMenuItem.Name = "dELETERECORDToolStripMenuItem";
             this.dELETERECORDToolStripMenuItem.Size = new System.Drawing.Size(215, 32);
             this.dELETERECORDToolStripMenuItem.Text = "DELETE RECORD";
-            this.dELETERECORDToolStripMenuItem.Click += new System.EventHandler(this.dELETERECORDToolStripMenuItem_Click_1);
+            this.dELETERECORDToolStripMenuItem.Click += new System.EventHandler(this.dELETERECORDToolStripMenuItem_Click);
             // 
-            // carPartsBindingSource
+            // vIEWRECORDToolStripMenuItem
             // 
-            this.carPartsBindingSource.DataMember = "CarParts";
-            this.carPartsBindingSource.DataSource = this.car_traderDataSet4;
+            this.vIEWRECORDToolStripMenuItem.Name = "vIEWRECORDToolStripMenuItem";
+            this.vIEWRECORDToolStripMenuItem.Size = new System.Drawing.Size(215, 32);
+            this.vIEWRECORDToolStripMenuItem.Text = "VIEW RECORD";
+            this.vIEWRECORDToolStripMenuItem.Click += new System.EventHandler(this.vIEWRECORDToolStripMenuItem_Click);
             // 
-            // car_traderDataSet4
+            // orderDisplayBindingSource
             // 
-            this.car_traderDataSet4.DataSetName = "car_traderDataSet4";
-            this.car_traderDataSet4.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            this.orderDisplayBindingSource.DataSource = typeof(ABC_Car_Traders.OrderDisplay);
             // 
-            // carPartsTableAdapter
+            // Id
             // 
-            this.carPartsTableAdapter.ClearBeforeFill = true;
+            this.Id.DataPropertyName = "Id";
+            this.Id.HeaderText = "Id";
+            this.Id.MinimumWidth = 8;
+            this.Id.Name = "Id";
+            this.Id.ReadOnly = true;
             // 
-            // CarPartsForm
+            // customerNameDataGridViewTextBoxColumn
+            // 
+            this.customerNameDataGridViewTextBoxColumn.DataPropertyName = "CustomerName";
+            this.customerNameDataGridViewTextBoxColumn.HeaderText = "CustomerName";
+            this.customerNameDataGridViewTextBoxColumn.MinimumWidth = 8;
+            this.customerNameDataGridViewTextBoxColumn.Name = "customerNameDataGridViewTextBoxColumn";
+            this.customerNameDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // orderDateDataGridViewTextBoxColumn
+            // 
+            this.orderDateDataGridViewTextBoxColumn.DataPropertyName = "OrderDate";
+            this.orderDateDataGridViewTextBoxColumn.HeaderText = "OrderDate";
+            this.orderDateDataGridViewTextBoxColumn.MinimumWidth = 8;
+            this.orderDateDataGridViewTextBoxColumn.Name = "orderDateDataGridViewTextBoxColumn";
+            this.orderDateDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // totalDataGridViewTextBoxColumn
+            // 
+            this.totalDataGridViewTextBoxColumn.DataPropertyName = "Total";
+            this.totalDataGridViewTextBoxColumn.HeaderText = "Total";
+            this.totalDataGridViewTextBoxColumn.MinimumWidth = 8;
+            this.totalDataGridViewTextBoxColumn.Name = "totalDataGridViewTextBoxColumn";
+            this.totalDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // statusDataGridViewTextBoxColumn
+            // 
+            this.statusDataGridViewTextBoxColumn.DataPropertyName = "Status";
+            this.statusDataGridViewTextBoxColumn.HeaderText = "Status";
+            this.statusDataGridViewTextBoxColumn.MinimumWidth = 8;
+            this.statusDataGridViewTextBoxColumn.Name = "statusDataGridViewTextBoxColumn";
+            this.statusDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // OrdersForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.dataGridView1);
-            this.Name = "CarPartsForm";
-            this.Text = "Car Parts Details";
-            this.Load += new System.EventHandler(this.CarPartsForm_Load);
+            this.Name = "OrdersForm";
+            this.Text = "OrdersForm";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.carPartsBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.car_traderDataSet4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.orderDisplayBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        private car_traderDataSet4 car_traderDataSet4;
-        private System.Windows.Forms.BindingSource carPartsBindingSource;
-        private car_traderDataSet4TableAdapters.CarPartsTableAdapter carPartsTableAdapter;
+
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem aDDRECORDToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem eDITRECORDToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dELETERECORDToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem vIEWRECORDToolStripMenuItem;
+        private System.Windows.Forms.BindingSource orderDisplayBindingSource;
         private System.Windows.Forms.DataGridViewTextBoxColumn Id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn partNameDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn priceDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn customerNameDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn orderDateDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn totalDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn statusDataGridViewTextBoxColumn;
     }
 }
