@@ -6,11 +6,22 @@ namespace ABC_Car_Traders
     public partial class CarPartsForm : Form
     {
         private Database database;
+        private bool isAdmin;
 
-        public CarPartsForm()
+        public CarPartsForm(bool isAdmin)
         {
             InitializeComponent();
             database = new Database();
+            this.isAdmin = isAdmin;
+            SetAdminPrivileges();
+        }
+
+        private void SetAdminPrivileges()
+        {
+            // Enable or disable add, edit, delete based on admin status
+            aDDRECORDToolStripMenuItem.Enabled = isAdmin;
+            eDITRECORDToolStripMenuItem.Enabled = isAdmin;
+            dELETERECORDToolStripMenuItem.Enabled = isAdmin;
         }
 
         private void CarPartsForm_Load(object sender, EventArgs e)
@@ -21,101 +32,122 @@ namespace ABC_Car_Traders
 
         private void aDDRECORDToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CarPartDialog dialog = new CarPartDialog();
-            if (dialog.ShowDialog() == DialogResult.OK)
+            if (isAdmin)
             {
-                try
+                CarPartDialog dialog = new CarPartDialog();
+                if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    var carPart = new CarPart
+                    try
                     {
-                        PartName = dialog.PartName,
-                        Price = decimal.Parse(dialog.Price)
-                    };
-                    database.AddCarPart(carPart);
-                    this.carPartsTableAdapter.Fill(this.car_traderDataSet4.CarParts);
-                    MessageBox.Show("Car part added successfully.");
+                        var carPart = new CarPart
+                        {
+                            PartName = dialog.PartName,
+                            Price = decimal.Parse(dialog.Price)
+                        };
+                        database.AddCarPart(carPart);
+                        this.carPartsTableAdapter.Fill(this.car_traderDataSet4.CarParts);
+                        MessageBox.Show("Car part added successfully.");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("An error occurred while adding the car part. Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("An error occurred while adding the car part. Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+            }
+            else
+            {
+                MessageBox.Show("You do not have permission to add car parts.", "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
         private void dELETERECORDToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            if (dataGridView1.SelectedRows.Count > 0)
+            if (isAdmin)
             {
-                int partId = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells["Id"].Value);
-
-                var confirmResult = MessageBox.Show("Are you sure to delete this car part record?",
-                                                     "Confirm Delete",
-                                                     MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                if (confirmResult == DialogResult.Yes)
+                if (dataGridView1.SelectedRows.Count > 0)
                 {
-                    try
+                    int partId = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells["Id"].Value);
+
+                    var confirmResult = MessageBox.Show("Are you sure to delete this car part record?",
+                                                         "Confirm Delete",
+                                                         MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (confirmResult == DialogResult.Yes)
                     {
-                        database.DeleteCarPart(partId);
-                        this.carPartsTableAdapter.Fill(this.car_traderDataSet4.CarParts);
-                        MessageBox.Show("Car part record deleted successfully.");
+                        try
+                        {
+                            database.DeleteCarPart(partId);
+                            this.carPartsTableAdapter.Fill(this.car_traderDataSet4.CarParts);
+                            MessageBox.Show("Car part record deleted successfully.");
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("An error occurred while deleting the car part. Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("An error occurred while deleting the car part. Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please select a car part record to delete.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             else
             {
-                MessageBox.Show("Please select a car part record to delete.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("You do not have permission to delete car parts.", "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
         private void eDITRECORDToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            if (dataGridView1.SelectedRows.Count > 0)
+            if (isAdmin)
             {
-                // Get the selected car part's ID
-                int partId = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells["Id"].Value);
-
-                // Retrieve the car part details from the database
-                CarPart carPartToEdit = database.GetCarPartById(partId);
-
-                // Create a new dialog for editing
-                CarPartDialog dialog = new CarPartDialog(carPartToEdit);
-
-                // Show the dialog
-                if (dialog.ShowDialog() == DialogResult.OK)
+                if (dataGridView1.SelectedRows.Count > 0)
                 {
-                    try
+                    // Get the selected car part's ID
+                    int partId = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells["Id"].Value);
+
+                    // Retrieve the car part details from the database
+                    CarPart carPartToEdit = database.GetCarPartById(partId);
+
+                    // Create a new dialog for editing
+                    CarPartDialog dialog = new CarPartDialog(carPartToEdit);
+
+                    // Show the dialog
+                    if (dialog.ShowDialog() == DialogResult.OK)
                     {
-                        // Update the car part's details with the new values from the dialog
-                        carPartToEdit.PartName = dialog.PartName;
-                        carPartToEdit.Price = decimal.Parse(dialog.Price);
+                        try
+                        {
+                            // Update the car part's details with the new values from the dialog
+                            carPartToEdit.PartName = dialog.PartName;
+                            carPartToEdit.Price = decimal.Parse(dialog.Price);
 
-                        // Update the car part in the database
-                        database.UpdateCarPart(carPartToEdit);
+                            // Update the car part in the database
+                            database.UpdateCarPart(carPartToEdit);
 
-                        // Refresh the DataGridView to reflect the changes
-                        this.carPartsTableAdapter.Fill(this.car_traderDataSet4.CarParts);
+                            // Refresh the DataGridView to reflect the changes
+                            this.carPartsTableAdapter.Fill(this.car_traderDataSet4.CarParts);
 
-                        MessageBox.Show("Car part record updated successfully.");
+                            MessageBox.Show("Car part record updated successfully.");
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("An error occurred while updating the car part. Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("An error occurred while updating the car part. Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please select a car part record to edit.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             else
             {
-                MessageBox.Show("Please select a car part record to edit.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("You do not have permission to edit car parts.", "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-
+            // Handle cell click events if needed
         }
     }
 }

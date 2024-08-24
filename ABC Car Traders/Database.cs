@@ -269,7 +269,7 @@ namespace ABC_Car_Traders
                             {
                                 Id = reader.GetInt32(0),
                                 PartName = reader.GetString(1),
-                                Price = reader.GetDecimal(2)
+                                Price = Convert.ToDecimal(reader.GetDouble(2))
                             };
                         }
                     }
@@ -363,79 +363,6 @@ namespace ABC_Car_Traders
                 command.Parameters.AddWithValue("@OrderDate", order.OrderDate);
                 command.Parameters.AddWithValue("@Status", order.Status);
                 command.Parameters.AddWithValue("@Id", order.Id);
-                command.ExecuteNonQuery();
-            }
-        }
-
-        // ------------------ CRUD Operations for OrderDetails ------------------
-        public void AddOrderDetail(OrderDetail orderDetail)
-        {
-            using (var connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                string insertOrderDetail = @"INSERT INTO OrderDetails (OrderId, CarId, PartId, Quantity) VALUES (@OrderId, @CarId, @PartId, @Quantity)";
-                var command = new SqlCommand(insertOrderDetail, connection);
-                command.Parameters.AddWithValue("@OrderId", orderDetail.OrderId);
-                command.Parameters.AddWithValue("@CarId", orderDetail.CarId);
-                command.Parameters.AddWithValue("@PartId", orderDetail.PartId);
-                command.Parameters.AddWithValue("@Quantity", orderDetail.Quantity);
-                command.ExecuteNonQuery();
-            }
-        }
-
-        public void DeleteOrderDetail(int orderDetailId)
-        {
-            using (var connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                string deleteOrderDetail = @"DELETE FROM OrderDetails WHERE Id = @Id";
-                var command = new SqlCommand(deleteOrderDetail, connection);
-                command.Parameters.AddWithValue("@Id", orderDetailId);
-                command.ExecuteNonQuery();
-            }
-        }
-
-        public OrderDetail GetOrderDetailById(int orderDetailId)
-        {
-            OrderDetail orderDetail = null;
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                string query = "SELECT Id, OrderId, CarId, PartId, Quantity FROM OrderDetails WHERE Id = @OrderDetailId";
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@OrderDetailId", orderDetailId);
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            orderDetail = new OrderDetail
-                            {
-                                Id = reader.GetInt32(0),
-                                OrderId = reader.GetInt32(1),
-                                CarId = reader.GetInt32(2),
-                                PartId = reader.GetInt32(3),
-                                Quantity = reader.GetInt32(4)
-                            };
-                        }
-                    }
-                }
-            }
-            return orderDetail;
-        }
-
-        public void UpdateOrderDetail(OrderDetail orderDetail)
-        {
-            using (var connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                string updateOrderDetail = @"UPDATE OrderDetails SET OrderId = @OrderId, CarId = @CarId, PartId = @PartId, Quantity = @Quantity WHERE Id = @Id";
-                var command = new SqlCommand(updateOrderDetail, connection);
-                command.Parameters.AddWithValue("@OrderId", orderDetail.OrderId);
-                command.Parameters.AddWithValue("@CarId", orderDetail.CarId);
-                command.Parameters.AddWithValue("@PartId", orderDetail.PartId);
-                command.Parameters.AddWithValue("@Quantity", orderDetail.Quantity);
-                command.Parameters.AddWithValue("@Id", orderDetail.Id);
                 command.ExecuteNonQuery();
             }
         }
@@ -582,6 +509,199 @@ namespace ABC_Car_Traders
             }
 
             return orders;
+        }
+
+        public List<OrderDetailDisplay> GetOrderDetailsDisplayByOrderId(int orderId)
+        {
+            List<OrderDetailDisplay> orderDetails = new List<OrderDetailDisplay>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                // Query for car items
+                string queryCars = @"
+            SELECT od.Id, c.Make + ' ' + c.Model AS Item, od.Quantity, c.Price
+            FROM OrderDetails od
+            JOIN Cars c ON od.CarId = c.Id
+            WHERE od.OrderId = @OrderId AND od.CarId IS NOT NULL";
+
+                using (SqlCommand command = new SqlCommand(queryCars, connection))
+                {
+                    command.Parameters.AddWithValue("@OrderId", orderId);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            orderDetails.Add(new OrderDetailDisplay
+                            {
+                                Id = reader.GetInt32(0), // Retrieve the Id from OrderDetails
+                                Item = reader.GetString(1),
+                                Quantity = reader.GetInt32(2),
+                                Price = reader.GetDecimal(3)
+                            });
+                        }
+                    }
+                }
+
+                // Query for car part items
+                string queryParts = @"
+            SELECT od.Id, cp.PartName AS Item, od.Quantity, cp.Price
+            FROM OrderDetails od
+            JOIN CarParts cp ON od.PartId = cp.Id
+            WHERE od.OrderId = @OrderId AND od.PartId IS NOT NULL";
+
+                using (SqlCommand command = new SqlCommand(queryParts, connection))
+                {
+                    command.Parameters.AddWithValue("@OrderId", orderId);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            orderDetails.Add(new OrderDetailDisplay
+                            {
+                                Id = reader.GetInt32(0), // Retrieve the Id from OrderDetails
+                                Item = reader.GetString(1),
+                                Quantity = reader.GetInt32(2),
+                                Price = reader.GetDecimal(3)
+                            });
+                        }
+                    }
+                }
+            }
+
+            return orderDetails;
+        }
+
+        public void AddOrderDetail(OrderDetail orderDetail)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "INSERT INTO OrderDetails (OrderId, CarId, PartId, Quantity) VALUES (@OrderId, @CarId, @PartId, @Quantity)";
+                var command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@OrderId", orderDetail.OrderId);
+                command.Parameters.AddWithValue("@CarId", orderDetail.CarId == 0 ? (object)DBNull.Value : orderDetail.CarId);
+                command.Parameters.AddWithValue("@PartId", orderDetail.PartId == 0 ? (object)DBNull.Value : orderDetail.PartId);
+                command.Parameters.AddWithValue("@Quantity", orderDetail.Quantity);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public OrderDetail GetOrderDetailById(int id)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "SELECT * FROM OrderDetails WHERE Id = @Id";
+                var command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@Id", id);
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return new OrderDetail
+                        {
+                            Id = reader.GetInt32(0),
+                            OrderId = reader.GetInt32(1),
+                            CarId = reader.IsDBNull(2) ? 0 : reader.GetInt32(2),
+                            PartId = reader.IsDBNull(3) ? 0 : reader.GetInt32(3),
+                            Quantity = reader.GetInt32(4),
+                        };
+                    }
+                }
+            }
+            return null;
+        }
+
+        public void UpdateOrderDetail(OrderDetail orderDetail)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "UPDATE OrderDetails SET CarId = @CarId, PartId = @PartId, Quantity = @Quantity WHERE Id = @Id";
+                var command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@CarId", orderDetail.CarId == 0 ? (object)DBNull.Value : orderDetail.CarId);
+                command.Parameters.AddWithValue("@PartId", orderDetail.PartId == 0 ? (object)DBNull.Value : orderDetail.PartId);
+                command.Parameters.AddWithValue("@Quantity", orderDetail.Quantity);
+                command.Parameters.AddWithValue("@Id", orderDetail.Id);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public void DeleteOrderDetail(int id)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "DELETE FROM OrderDetails WHERE Id = @Id";
+                var command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@Id", id);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public List<Car> GetCars()
+        {
+            List<Car> cars = new List<Car>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "SELECT Id, Make, Model, Price FROM Cars";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Car car = new Car
+                            {
+                                Id = reader.GetInt32(0),
+                                Make = reader.GetString(1),
+                                Model = reader.GetString(2),
+                                Price = reader.GetDecimal(3)
+                            };
+                            cars.Add(car);
+                        }
+                    }
+                }
+            }
+
+            return cars;
+        }
+
+        public List<CarPart> GetCarParts()
+        {
+            List<CarPart> carParts = new List<CarPart>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "SELECT Id, PartName, Price FROM CarParts";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            CarPart carPart = new CarPart
+                            {
+                                Id = reader.GetInt32(0),
+                                PartName = reader.GetString(1),
+                                Price = reader.GetDecimal(2)
+                            };
+                            carParts.Add(carPart);
+                        }
+                    }
+                }
+            }
+
+            return carParts;
         }
 
     }

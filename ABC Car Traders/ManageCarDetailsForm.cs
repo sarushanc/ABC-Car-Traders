@@ -6,11 +6,13 @@ namespace ABC_Car_Traders
     public partial class ManageCarDetailsForm : Form
     {
         private Database database;
+        private bool isAdmin;
 
-        public ManageCarDetailsForm()
+        public ManageCarDetailsForm(bool isAdmin)
         {
             InitializeComponent();
             database = new Database();
+            this.isAdmin = isAdmin;
         }
 
         private void ManageCarDetailsForm_Load(object sender, EventArgs e)
@@ -19,7 +21,7 @@ namespace ABC_Car_Traders
             this.carsTableAdapter.Fill(this.car_traderDataSet3.Cars);
             try
             {
-
+                // Additional loading logic if needed
             }
             catch (Exception ex)
             {
@@ -34,6 +36,12 @@ namespace ABC_Car_Traders
 
         private void aDDRECORDToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (!isAdmin)
+            {
+                MessageBox.Show("Only admins can add car records.", "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             CarDialog dialog = new CarDialog();
             if (dialog.ShowDialog() == DialogResult.OK)
             {
@@ -58,6 +66,12 @@ namespace ABC_Car_Traders
 
         private void dELETERECORDToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (!isAdmin)
+            {
+                MessageBox.Show("Only admins can delete car records.", "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             if (dataGridView1.SelectedRows.Count > 0)
             {
                 int carId = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells["Id"].Value);
@@ -87,6 +101,12 @@ namespace ABC_Car_Traders
 
         private void eDITRECORDToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (!isAdmin)
+            {
+                MessageBox.Show("Only admins can edit car records.", "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             if (dataGridView1.SelectedRows.Count > 0)
             {
                 // Get the selected car's ID

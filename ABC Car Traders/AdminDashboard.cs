@@ -19,13 +19,13 @@ namespace ABC_Car_Traders
 
         private void button1_Click(object sender, EventArgs e)
         {
-            ManageCarDetailsForm carsForm = new ManageCarDetailsForm();
+            ManageCarDetailsForm carsForm = new ManageCarDetailsForm(isAdmin: true);
             carsForm.Show();
         }
 
         private void buttonCarParts_Click(object sender, EventArgs e)
         {
-            CarPartsForm carPartsForm = new CarPartsForm();
+            CarPartsForm carPartsForm = new CarPartsForm(isAdmin: true);
             carPartsForm.Show();
         }
 
@@ -39,6 +39,11 @@ namespace ABC_Car_Traders
         {
             OrdersForm ordersForm = new OrdersForm();
             ordersForm.Show();
+        }
+
+        private void AdminDashboard_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -205,6 +205,19 @@
     </Compile>
     <Compile Include="Order.cs" />
     <Compile Include="OrderDetail.cs" />
+    <Compile Include="OrderDetailsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OrderDetailsDialog.Designer.cs">
+      <DependentUpon>OrderDetailsDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OrderDetailsDisplay.cs" />
+    <Compile Include="OrderDetailsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OrderDetailsForm.Designer.cs">
+      <DependentUpon>OrderDetailsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="OrderDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -258,6 +271,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ManageCarDetailsForm.resx">
       <DependentUpon>ManageCarDetailsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OrderDetailsDialog.resx">
+      <DependentUpon>OrderDetailsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OrderDetailsForm.resx">
+      <DependentUpon>OrderDetailsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="OrderDialog.resx">
       <DependentUpon>OrderDialog.cs</DependentUpon>
@@ -352,6 +371,7 @@
       <DependentUpon>car_traderDataSet6.xsd</DependentUpon>
     </None>
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\OrderDetailDisplay.datasource" />
     <None Include="Properties\DataSources\OrderDisplay.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

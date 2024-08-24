@@ -5,7 +5,7 @@ namespace ABC_Car_Traders
 {
     public partial class CustomerDashboard : Form
     {
-        private Customer customer; 
+        private Customer customer;
 
         public CustomerDashboard(Customer customer)
         {
@@ -23,7 +23,7 @@ namespace ABC_Car_Traders
         private void buttonCarParts_Click(object sender, EventArgs e)
         {
             // Assuming there's a CarPartsForm you want to show
-            CarPartsForm carPartsForm = new CarPartsForm();
+            CarPartsForm carPartsForm = new CarPartsForm(isAdmin: false);
             carPartsForm.Show();
         }
 
@@ -39,7 +39,7 @@ namespace ABC_Car_Traders
         private void button1_Click(object sender, EventArgs e)
         {
             // This could be a log-out button or something similar
-            ManageCarDetailsForm carDetailsForm = new ManageCarDetailsForm();
+            ManageCarDetailsForm carDetailsForm = new ManageCarDetailsForm(isAdmin: false);
             carDetailsForm.Show();
         }
 

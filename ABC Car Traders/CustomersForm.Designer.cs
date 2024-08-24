@@ -30,22 +30,22 @@
         {
             this.components = new System.ComponentModel.Container();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.car_traderDataSet5 = new ABC_Car_Traders.car_traderDataSet5();
-            this.customersBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.customersTableAdapter = new ABC_Car_Traders.car_traderDataSet5TableAdapters.CustomersTableAdapter();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.aDDRECORDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.eDITRECORDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dELETERECORDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.emailDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.passwordDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.phoneDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.aDDRECORDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.eDITRECORDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dELETERECORDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.customersBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.car_traderDataSet5 = new ABC_Car_Traders.car_traderDataSet5();
+            this.customersTableAdapter = new ABC_Car_Traders.car_traderDataSet5TableAdapters.CustomersTableAdapter();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.car_traderDataSet5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.customersBindingSource)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.customersBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.car_traderDataSet5)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridView1
@@ -72,51 +72,6 @@
             this.dataGridView1.Size = new System.Drawing.Size(800, 450);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
-            // 
-            // car_traderDataSet5
-            // 
-            this.car_traderDataSet5.DataSetName = "car_traderDataSet5";
-            this.car_traderDataSet5.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // customersBindingSource
-            // 
-            this.customersBindingSource.DataMember = "Customers";
-            this.customersBindingSource.DataSource = this.car_traderDataSet5;
-            // 
-            // customersTableAdapter
-            // 
-            this.customersTableAdapter.ClearBeforeFill = true;
-            // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aDDRECORDToolStripMenuItem,
-            this.eDITRECORDToolStripMenuItem,
-            this.dELETERECORDToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(216, 100);
-            // 
-            // aDDRECORDToolStripMenuItem
-            // 
-            this.aDDRECORDToolStripMenuItem.Name = "aDDRECORDToolStripMenuItem";
-            this.aDDRECORDToolStripMenuItem.Size = new System.Drawing.Size(240, 32);
-            this.aDDRECORDToolStripMenuItem.Text = "ADD RECORD";
-            this.aDDRECORDToolStripMenuItem.Click += new System.EventHandler(this.aDDRECORDToolStripMenuItem_Click_1);
-            // 
-            // eDITRECORDToolStripMenuItem
-            // 
-            this.eDITRECORDToolStripMenuItem.Name = "eDITRECORDToolStripMenuItem";
-            this.eDITRECORDToolStripMenuItem.Size = new System.Drawing.Size(240, 32);
-            this.eDITRECORDToolStripMenuItem.Text = "EDIT RECORD";
-            this.eDITRECORDToolStripMenuItem.Click += new System.EventHandler(this.eDITRECORDToolStripMenuItem_Click_1);
-            // 
-            // dELETERECORDToolStripMenuItem
-            // 
-            this.dELETERECORDToolStripMenuItem.Name = "dELETERECORDToolStripMenuItem";
-            this.dELETERECORDToolStripMenuItem.Size = new System.Drawing.Size(240, 32);
-            this.dELETERECORDToolStripMenuItem.Text = "DELETE RECORD";
-            this.dELETERECORDToolStripMenuItem.Click += new System.EventHandler(this.dELETERECORDToolStripMenuItem_Click_1);
             // 
             // Id
             // 
@@ -158,6 +113,51 @@
             this.phoneDataGridViewTextBoxColumn.Name = "phoneDataGridViewTextBoxColumn";
             this.phoneDataGridViewTextBoxColumn.ReadOnly = true;
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aDDRECORDToolStripMenuItem,
+            this.eDITRECORDToolStripMenuItem,
+            this.dELETERECORDToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(241, 133);
+            // 
+            // aDDRECORDToolStripMenuItem
+            // 
+            this.aDDRECORDToolStripMenuItem.Name = "aDDRECORDToolStripMenuItem";
+            this.aDDRECORDToolStripMenuItem.Size = new System.Drawing.Size(240, 32);
+            this.aDDRECORDToolStripMenuItem.Text = "ADD RECORD";
+            this.aDDRECORDToolStripMenuItem.Click += new System.EventHandler(this.aDDRECORDToolStripMenuItem_Click_1);
+            // 
+            // eDITRECORDToolStripMenuItem
+            // 
+            this.eDITRECORDToolStripMenuItem.Name = "eDITRECORDToolStripMenuItem";
+            this.eDITRECORDToolStripMenuItem.Size = new System.Drawing.Size(240, 32);
+            this.eDITRECORDToolStripMenuItem.Text = "EDIT RECORD";
+            this.eDITRECORDToolStripMenuItem.Click += new System.EventHandler(this.eDITRECORDToolStripMenuItem_Click_1);
+            // 
+            // dELETERECORDToolStripMenuItem
+            // 
+            this.dELETERECORDToolStripMenuItem.Name = "dELETERECORDToolStripMenuItem";
+            this.dELETERECORDToolStripMenuItem.Size = new System.Drawing.Size(240, 32);
+            this.dELETERECORDToolStripMenuItem.Text = "DELETE RECORD";
+            this.dELETERECORDToolStripMenuItem.Click += new System.EventHandler(this.dELETERECORDToolStripMenuItem_Click_1);
+            // 
+            // customersBindingSource
+            // 
+            this.customersBindingSource.DataMember = "Customers";
+            this.customersBindingSource.DataSource = this.car_traderDataSet5;
+            // 
+            // car_traderDataSet5
+            // 
+            this.car_traderDataSet5.DataSetName = "car_traderDataSet5";
+            this.car_traderDataSet5.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // customersTableAdapter
+            // 
+            this.customersTableAdapter.ClearBeforeFill = true;
+            // 
             // CustomersForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -168,9 +168,9 @@
             this.Text = "Customers Details";
             this.Load += new System.EventHandler(this.CustomersForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.car_traderDataSet5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.customersBindingSource)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.customersBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.car_traderDataSet5)).EndInit();
             this.ResumeLayout(false);
 
         }

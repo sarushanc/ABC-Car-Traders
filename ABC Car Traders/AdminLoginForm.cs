@@ -30,7 +30,7 @@ namespace ABC_Car_Traders
                 MessageBox.Show("Login successful");
                 AdminDashboard adminDashboardForm = new AdminDashboard();
                 adminDashboardForm.Show();
-                this.Hide(); 
+                this.Hide();
             }
             else
             {

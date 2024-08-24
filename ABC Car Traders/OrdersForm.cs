@@ -108,6 +108,14 @@ namespace ABC_Car_Traders
                         return;
                     }
 
+                    // Check if the user is a customer and the order status is "Pending"
+                    if (customer != null && existingOrder.Status != "Pending")
+                    {
+                        MessageBox.Show("You can only edit orders with a status of 'Pending'.", "Edit Not Allowed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    // Allow editing for admin or customers with "Pending" orders
                     OrderDialog orderDialog = new OrderDialog(existingOrder);
 
                     if (orderDialog.ShowDialog() == DialogResult.OK)
@@ -124,7 +132,7 @@ namespace ABC_Car_Traders
 
                             if (customer != null)
                             {
-                                updatedOrder.CustomerId = customer.Id; // Ensure the customer ID remains the same
+                                updatedOrder.CustomerId = customer.Id; // Ensure the customer ID remains the same for customers
                             }
 
                             database.UpdateOrder(updatedOrder);
@@ -164,6 +172,22 @@ namespace ABC_Car_Traders
             {
                 int orderId = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells["Id"].Value);
 
+                Order existingOrder = database.GetOrderById(orderId);
+
+                // Check if existingOrder was successfully retrieved
+                if (existingOrder == null)
+                {
+                    MessageBox.Show("The selected order could not be found in the database.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Check if the order status is "Pending"
+                if (existingOrder.Status != "Pending")
+                {
+                    MessageBox.Show("You can only delete orders with a status of 'Pending'.", "Delete Not Allowed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 var confirmResult = MessageBox.Show("Are you sure you want to delete this order?",
                                                     "Confirm Delete",
                                                     MessageBoxButtons.YesNo,
@@ -197,11 +221,11 @@ namespace ABC_Car_Traders
             if (dataGridView1.SelectedRows.Count > 0)
             {
                 int orderId = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells["Id"].Value);
-                Order order = database.GetOrderById(orderId);
+                //Order order = database.GetOrderById(orderId);
 
                 // Uncomment and implement the following line when you have an OrderDetailsForm
-                //OrderDetailsForm orderDetailsForm = new OrderDetailsForm(order);
-                //orderDetailsForm.ShowDialog();
+                OrderDetailsForm orderDetailsForm = new OrderDetailsForm(orderId);
+                orderDetailsForm.ShowDialog();
             }
             else
             {
