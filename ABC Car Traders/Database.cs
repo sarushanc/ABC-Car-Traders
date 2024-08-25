@@ -704,5 +704,150 @@ namespace ABC_Car_Traders
             return carParts;
         }
 
+        public List<Car> SearchCars(string searchTerm)
+        {
+            List<Car> cars = new List<Car>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = @"
+            SELECT Id, Make, Model, Price
+            FROM Cars
+            WHERE Make LIKE @SearchTerm OR Model LIKE @SearchTerm";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@SearchTerm", "%" + searchTerm + "%");
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            cars.Add(new Car
+                            {
+                                Id = reader.GetInt32(0),
+                                Make = reader.GetString(1),
+                                Model = reader.GetString(2),
+                                Price = reader.GetDecimal(3)
+                            });
+                        }
+                    }
+                }
+            }
+
+            return cars;
+        }
+
+        public List<Car> GetAllCars()
+        {
+            List<Car> cars = new List<Car>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "SELECT Id, Make, Model, Price FROM Cars";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            cars.Add(new Car
+                            {
+                                Id = reader.GetInt32(0),
+                                Make = reader.GetString(1),
+                                Model = reader.GetString(2),
+                                Price = reader.GetDecimal(3)
+                            });
+                        }
+                    }
+                }
+            }
+
+            return cars;
+        }
+
+        public List<CarPart> SearchCarParts(string searchTerm)
+        {
+            List<CarPart> carParts = new List<CarPart>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = @"
+            SELECT Id, PartName, Price 
+            FROM CarParts 
+            WHERE PartName LIKE @SearchTerm";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@SearchTerm", "%" + searchTerm + "%");
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            carParts.Add(new CarPart
+                            {
+                                Id = reader.GetInt32(0),
+                                PartName = reader.GetString(1),
+                                Price = Convert.ToDecimal(reader.GetDouble(2))
+                            });
+                        }
+                    }
+                }
+            }
+
+            return carParts;
+        }
+
+        public List<CarPart> GetAllCarParts()
+        {
+            List<CarPart> carParts = new List<CarPart>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "SELECT Id, PartName, Price FROM CarParts";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            CarPart carPart = new CarPart();
+
+                            carPart.Id = reader.GetInt32(reader.GetOrdinal("Id"));
+                            carPart.PartName = reader.GetString(reader.GetOrdinal("PartName"));
+
+                            // Handle potential casting issues for the Price column
+                            if (!reader.IsDBNull(reader.GetOrdinal("Price")))
+                            {
+                                try
+                                {
+                                    carPart.Price = reader.GetDecimal(reader.GetOrdinal("Price"));
+                                }
+                                catch (InvalidCastException)
+                                {
+                                    // Handle cases where Price might be stored as a different type in the database
+                                    carPart.Price = Convert.ToDecimal(reader.GetValue(reader.GetOrdinal("Price")));
+                                }
+                            }
+                            else
+                            {
+                                carPart.Price = 0; // Handle null or default value for Price
+                            }
+
+                            carParts.Add(carPart);
+                        }
+                    }
+                }
+            }
+
+            return carParts;
+        }
     }
 }

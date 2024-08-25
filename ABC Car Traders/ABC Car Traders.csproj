@@ -203,6 +203,7 @@
     <Compile Include="ManageCarDetailsForm.Designer.cs">
       <DependentUpon>ManageCarDetailsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Microsoft\VisualBasic\Interaction.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="OrderDetail.cs" />
     <Compile Include="OrderDetailsDialog.cs">

@@ -149,5 +149,41 @@ namespace ABC_Car_Traders
         {
             // Handle cell click events if needed
         }
+
+        private void textSearch_TextChanged(object sender, EventArgs e)
+        {
+            string searchTerm = textSearch.Text.Trim();
+
+            try
+            {
+                if (!string.IsNullOrEmpty(searchTerm))
+                {
+                    // Query the database to find car parts that match the search term
+                    var searchResults = database.SearchCarParts(searchTerm);
+
+                    if (searchResults.Count > 0)
+                    {
+                        // Bind the search results to the DataGridView
+                        dataGridView1.DataSource = searchResults;
+                    }
+                    else
+                    {
+                        // If no results, clear the DataGridView
+                        dataGridView1.DataSource = null;
+                        MessageBox.Show("No car parts found matching your search criteria.", "No Results", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+                else
+                {
+                    // When search term is null or empty, reload all records
+                    var allCarParts = database.GetAllCarParts();
+                    dataGridView1.DataSource = allCarParts;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while searching for car parts. Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }

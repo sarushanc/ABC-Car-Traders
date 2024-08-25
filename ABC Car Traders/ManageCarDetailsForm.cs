@@ -152,5 +152,41 @@ namespace ABC_Car_Traders
                 MessageBox.Show("Please select a car record to edit.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
+
+        private void textSearch_TextChanged(object sender, EventArgs e)
+        {
+            string searchTerm = textSearch.Text.Trim();
+
+            try
+            {
+                if (!string.IsNullOrEmpty(searchTerm))
+                {
+                    // Query the database to find cars that match the search term
+                    var searchResults = database.SearchCars(searchTerm);
+
+                    if (searchResults.Count > 0)
+                    {
+                        // Bind the search results to the DataGridView
+                        dataGridView1.DataSource = searchResults;
+                    }
+                    else
+                    {
+                        // Clear the DataGridView if no results found
+                        dataGridView1.DataSource = null;
+                        MessageBox.Show("No cars found matching your search criteria.", "No Results", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+                else
+                {
+                    // When search term is null or empty, reload all records
+                    var allCars = database.GetAllCars(); // Method to get all cars
+                    dataGridView1.DataSource = allCars;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while searching for cars. Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }
