@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace ABC_Car_Traders
@@ -17,7 +19,7 @@ namespace ABC_Car_Traders
 
         private void ManageCarDetailsForm_Load(object sender, EventArgs e)
         {
-            // TODO: This line of code loads data into the 'car_traderDataSet3.Cars' table. You can move, or remove it, as needed.
+            // Load data into the Cars table when the form loads
             this.carsTableAdapter.Fill(this.car_traderDataSet3.Cars);
             try
             {
@@ -186,6 +188,59 @@ namespace ABC_Car_Traders
             catch (Exception ex)
             {
                 MessageBox.Show($"An error occurred while searching for cars. Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Get all car details
+                var cars = database.GetAllCars();
+
+                if (cars.Count > 0)
+                {
+                    // Create a new Excel workbook
+                    using (var workbook = new XLWorkbook())
+                    {
+                        // Add a worksheet
+                        var worksheet = workbook.Worksheets.Add("Cars");
+
+                        // Add headers
+                        worksheet.Cell(1, 1).Value = "Make";
+                        worksheet.Cell(1, 2).Value = "Model";
+                        worksheet.Cell(1, 3).Value = "Price";
+
+                        // Populate data
+                        for (int i = 0; i < cars.Count; i++)
+                        {
+                            worksheet.Cell(i + 2, 1).Value = cars[i].Make;
+                            worksheet.Cell(i + 2, 2).Value = cars[i].Model;
+                            worksheet.Cell(i + 2, 3).Value = cars[i].Price;
+                        }
+
+                        // Save the workbook to a MemoryStream
+                        using (var stream = new MemoryStream())
+                        {
+                            workbook.SaveAs(stream);
+                            stream.Seek(0, SeekOrigin.Begin);
+
+                            // Save the file to the user's desktop
+                            var filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "CarDetails.xlsx");
+                            File.WriteAllBytes(filePath, stream.ToArray());
+
+                            MessageBox.Show($"Car details have been successfully exported to {filePath}.", "Export Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("No car details available to export.", "No Data", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while exporting car details. Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

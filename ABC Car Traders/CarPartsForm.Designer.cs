@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CarPartsForm));
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.aDDRECORDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.eDITRECORDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -37,12 +38,13 @@
             this.car_traderDataSet4 = new ABC_Car_Traders.car_traderDataSet4();
             this.carPartsTableAdapter = new ABC_Car_Traders.car_traderDataSet4TableAdapters.CarPartsTableAdapter();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.textSearch = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.partNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.priceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.textSearch = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.carPartsBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.car_traderDataSet4)).BeginInit();
@@ -107,6 +109,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.button1);
             this.splitContainer1.Panel1.Controls.Add(this.textSearch);
             this.splitContainer1.Panel1.Controls.Add(this.label1);
             // 
@@ -116,6 +119,23 @@
             this.splitContainer1.Size = new System.Drawing.Size(800, 450);
             this.splitContainer1.SplitterDistance = 46;
             this.splitContainer1.TabIndex = 1;
+            // 
+            // textSearch
+            // 
+            this.textSearch.Location = new System.Drawing.Point(221, 11);
+            this.textSearch.Name = "textSearch";
+            this.textSearch.Size = new System.Drawing.Size(442, 26);
+            this.textSearch.TabIndex = 3;
+            this.textSearch.TextChanged += new System.EventHandler(this.textSearch_TextChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(137, 17);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(60, 20);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Search";
             // 
             // dataGridView1
             // 
@@ -168,22 +188,17 @@
             this.priceDataGridViewTextBoxColumn.Name = "priceDataGridViewTextBoxColumn";
             this.priceDataGridViewTextBoxColumn.ReadOnly = true;
             // 
-            // textSearch
+            // button1
             // 
-            this.textSearch.Location = new System.Drawing.Point(221, 11);
-            this.textSearch.Name = "textSearch";
-            this.textSearch.Size = new System.Drawing.Size(442, 26);
-            this.textSearch.TabIndex = 3;
-            this.textSearch.TextChanged += new System.EventHandler(this.textSearch_TextChanged);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(137, 17);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(60, 20);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Search";
+            this.button1.BackColor = System.Drawing.Color.Transparent;
+            this.button1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button1.BackgroundImage")));
+            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.button1.Location = new System.Drawing.Point(743, 2);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(45, 44);
+            this.button1.TabIndex = 4;
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // CarPartsForm
             // 
@@ -222,5 +237,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn priceDataGridViewTextBoxColumn;
         private System.Windows.Forms.TextBox textSearch;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button button1;
     }
 }
