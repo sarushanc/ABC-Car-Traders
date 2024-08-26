@@ -125,7 +125,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "OrderDetailsDialog";
-            this.Text = "OrderDetailsDialog";
+            this.Text = "Add / Edit Order";
             this.ResumeLayout(false);
             this.PerformLayout();
 

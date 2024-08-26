@@ -408,14 +408,20 @@ namespace ABC_Car_Traders
             {
                 connection.Open();
                 string query = @"
-            SELECT o.Id, c.Name, o.OrderDate, 
-                   (SELECT SUM(od.Quantity * cp.Price) 
+        SELECT o.Id, c.Name, o.OrderDate, 
+               COALESCE(
+                   (SELECT SUM(CONVERT(decimal(18,2), od.Quantity * cp.Price)) 
                     FROM OrderDetails od
                     JOIN CarParts cp ON od.PartId = cp.Id
-                    WHERE od.OrderId = o.Id) AS Total, 
-                   o.Status
-            FROM Orders o
-            JOIN Customers c ON o.CustomerId = c.Id";
+                    WHERE od.OrderId = o.Id), 0) +
+               COALESCE(
+                   (SELECT SUM(CONVERT(decimal(18,2), od.Quantity * ca.Price)) 
+                    FROM OrderDetails od
+                    JOIN Cars ca ON od.CarId = ca.Id
+                    WHERE od.OrderId = o.Id), 0) AS Total,
+               o.Status
+        FROM Orders o
+        JOIN Customers c ON o.CustomerId = c.Id";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -428,7 +434,7 @@ namespace ABC_Car_Traders
                                 Id = reader.GetInt32(0),
                                 CustomerName = reader.GetString(1),
                                 OrderDate = reader.GetDateTime(2),
-                                Total = reader.IsDBNull(3) ? 0 : reader.GetDecimal(3),
+                                Total = reader.IsDBNull(3) ? 0m : Convert.ToDecimal(reader[3]), // Safely convert to decimal
                                 Status = reader.GetString(4)
                             });
                         }
@@ -477,15 +483,21 @@ namespace ABC_Car_Traders
 
                 // Query to get the orders and their details for a specific customer
                 string query = @"
-            SELECT o.Id, c.Name, o.OrderDate, 
-                   (SELECT SUM(od.Quantity * cp.Price) 
+        SELECT o.Id, c.Name, o.OrderDate, 
+               COALESCE(
+                   (SELECT SUM(CONVERT(decimal(18,2), od.Quantity * cp.Price)) 
                     FROM OrderDetails od
                     JOIN CarParts cp ON od.PartId = cp.Id
-                    WHERE od.OrderId = o.Id) AS Total, 
-                   o.Status
-            FROM Orders o
-            JOIN Customers c ON o.CustomerId = c.Id
-            WHERE o.CustomerId = @CustomerId";
+                    WHERE od.OrderId = o.Id), 0) +
+               COALESCE(
+                   (SELECT SUM(CONVERT(decimal(18,2), od.Quantity * ca.Price)) 
+                    FROM OrderDetails od
+                    JOIN Cars ca ON od.CarId = ca.Id
+                    WHERE od.OrderId = o.Id), 0) AS Total,
+               o.Status
+        FROM Orders o
+        JOIN Customers c ON o.CustomerId = c.Id
+        WHERE o.CustomerId = @CustomerId";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -495,12 +507,15 @@ namespace ABC_Car_Traders
                     {
                         while (reader.Read())
                         {
+                            // Safely converting the total to decimal, handling potential NULL values
+                            decimal total = reader.IsDBNull(3) ? 0m : Convert.ToDecimal(reader[3]);
+
                             orders.Add(new OrderDisplay
                             {
                                 Id = reader.GetInt32(0),
                                 CustomerName = reader.GetString(1),
                                 OrderDate = reader.GetDateTime(2),
-                                Total = reader.IsDBNull(3) ? 0 : reader.GetDecimal(3),
+                                Total = total,
                                 Status = reader.GetString(4)
                             });
                         }

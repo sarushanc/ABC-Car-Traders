@@ -84,7 +84,7 @@
             this.Controls.Add(this.buttonCarParts);
             this.Controls.Add(this.button1);
             this.Name = "AdminDashboard";
-            this.Text = "AdiminDashboard";
+            this.Text = "Admin Dashboard";
             this.Load += new System.EventHandler(this.AdminDashboard_Load);
             this.ResumeLayout(false);
 

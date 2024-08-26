@@ -145,7 +145,7 @@
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "OrderDialog";
-            this.Text = "OrderDialog";
+            this.Text = "Add / Edit Order";
             this.Load += new System.EventHandler(this.OrderDialog_Load);
             ((System.ComponentModel.ISupportInitialize)(this.customersBindingSource)).EndInit();
             this.ResumeLayout(false);

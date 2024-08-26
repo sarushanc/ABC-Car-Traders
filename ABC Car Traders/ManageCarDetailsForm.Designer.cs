@@ -37,13 +37,13 @@
             this.car_traderDataSet3 = new ABC_Car_Traders.car_traderDataSet3();
             this.carsTableAdapter = new ABC_Car_Traders.car_traderDataSet3TableAdapters.CarsTableAdapter();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.textSearch = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.makeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.modelDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.priceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.label1 = new System.Windows.Forms.Label();
-            this.textSearch = new System.Windows.Forms.TextBox();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.carsBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.car_traderDataSet3)).BeginInit();
@@ -118,6 +118,23 @@
             this.splitContainer1.SplitterDistance = 42;
             this.splitContainer1.TabIndex = 0;
             // 
+            // textSearch
+            // 
+            this.textSearch.Location = new System.Drawing.Point(193, 9);
+            this.textSearch.Name = "textSearch";
+            this.textSearch.Size = new System.Drawing.Size(442, 26);
+            this.textSearch.TabIndex = 1;
+            this.textSearch.TextChanged += new System.EventHandler(this.textSearch_TextChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(109, 15);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(60, 20);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Search";
+            // 
             // dataGridView1
             // 
             this.dataGridView1.AllowUserToAddRows = false;
@@ -173,23 +190,6 @@
             this.priceDataGridViewTextBoxColumn.Name = "priceDataGridViewTextBoxColumn";
             this.priceDataGridViewTextBoxColumn.ReadOnly = true;
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(109, 15);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(60, 20);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Search";
-            // 
-            // textSearch
-            // 
-            this.textSearch.Location = new System.Drawing.Point(193, 9);
-            this.textSearch.Name = "textSearch";
-            this.textSearch.Size = new System.Drawing.Size(442, 26);
-            this.textSearch.TabIndex = 1;
-            this.textSearch.TextChanged += new System.EventHandler(this.textSearch_TextChanged);
-            // 
             // ManageCarDetailsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -197,7 +197,7 @@
             this.ClientSize = new System.Drawing.Size(800, 449);
             this.Controls.Add(this.splitContainer1);
             this.Name = "ManageCarDetailsForm";
-            this.Text = "ManageCarDetailsForm";
+            this.Text = "Cars Details";
             this.Load += new System.EventHandler(this.ManageCarDetailsForm_Load);
             this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.carsBindingSource)).EndInit();

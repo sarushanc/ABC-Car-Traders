@@ -89,7 +89,7 @@
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.textBox1);
             this.Name = "AdminLoginForm";
-            this.Text = "AdminLoginForm";
+            this.Text = "Admin Login";
             this.Load += new System.EventHandler(this.AdminLoginForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

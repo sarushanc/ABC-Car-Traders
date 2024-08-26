@@ -30,14 +30,14 @@
         {
             this.components = new System.ComponentModel.Container();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.aDDRECORDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dELETERECORDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.itemDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.quantityDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.priceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.totalPriceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.aDDRECORDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dELETERECORDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.orderDetailDisplayBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
@@ -68,6 +68,29 @@
             this.dataGridView1.Size = new System.Drawing.Size(800, 450);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aDDRECORDToolStripMenuItem,
+            this.dELETERECORDToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(216, 68);
+            // 
+            // aDDRECORDToolStripMenuItem
+            // 
+            this.aDDRECORDToolStripMenuItem.Name = "aDDRECORDToolStripMenuItem";
+            this.aDDRECORDToolStripMenuItem.Size = new System.Drawing.Size(215, 32);
+            this.aDDRECORDToolStripMenuItem.Text = "ADD RECORD";
+            this.aDDRECORDToolStripMenuItem.Click += new System.EventHandler(this.aDDRECORDToolStripMenuItem_Click);
+            // 
+            // dELETERECORDToolStripMenuItem
+            // 
+            this.dELETERECORDToolStripMenuItem.Name = "dELETERECORDToolStripMenuItem";
+            this.dELETERECORDToolStripMenuItem.Size = new System.Drawing.Size(215, 32);
+            this.dELETERECORDToolStripMenuItem.Text = "DELETE RECORD";
+            this.dELETERECORDToolStripMenuItem.Click += new System.EventHandler(this.dELETERECORDToolStripMenuItem_Click);
             // 
             // Id
             // 
@@ -109,29 +132,6 @@
             this.totalPriceDataGridViewTextBoxColumn.Name = "totalPriceDataGridViewTextBoxColumn";
             this.totalPriceDataGridViewTextBoxColumn.ReadOnly = true;
             // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aDDRECORDToolStripMenuItem,
-            this.dELETERECORDToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(241, 101);
-            // 
-            // aDDRECORDToolStripMenuItem
-            // 
-            this.aDDRECORDToolStripMenuItem.Name = "aDDRECORDToolStripMenuItem";
-            this.aDDRECORDToolStripMenuItem.Size = new System.Drawing.Size(240, 32);
-            this.aDDRECORDToolStripMenuItem.Text = "ADD RECORD";
-            this.aDDRECORDToolStripMenuItem.Click += new System.EventHandler(this.aDDRECORDToolStripMenuItem_Click);
-            // 
-            // dELETERECORDToolStripMenuItem
-            // 
-            this.dELETERECORDToolStripMenuItem.Name = "dELETERECORDToolStripMenuItem";
-            this.dELETERECORDToolStripMenuItem.Size = new System.Drawing.Size(240, 32);
-            this.dELETERECORDToolStripMenuItem.Text = "DELETE RECORD";
-            this.dELETERECORDToolStripMenuItem.Click += new System.EventHandler(this.dELETERECORDToolStripMenuItem_Click);
-            // 
             // orderDetailDisplayBindingSource
             // 
             this.orderDetailDisplayBindingSource.DataSource = typeof(ABC_Car_Traders.OrderDetailDisplay);
@@ -143,7 +143,7 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.dataGridView1);
             this.Name = "OrderDetailsForm";
-            this.Text = "OrderDetailsForm";
+            this.Text = "Order Items Details";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.orderDetailDisplayBindingSource)).EndInit();

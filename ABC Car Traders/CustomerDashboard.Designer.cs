@@ -84,7 +84,7 @@
             this.Controls.Add(this.buttonCarParts);
             this.Controls.Add(this.button1);
             this.Name = "CustomerDashboard";
-            this.Text = "CustomerDashboard";
+            this.Text = "Customer Dashboard";
             this.Load += new System.EventHandler(this.CustomerDashboard_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
