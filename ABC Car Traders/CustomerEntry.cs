@@ -11,6 +11,7 @@ namespace ABC_Car_Traders
         {
             InitializeComponent();
             database = new Database();
+            textPassword.UseSystemPasswordChar = true;
         }
 
         private void buttonRegister_Click(object sender, EventArgs e)
@@ -46,6 +47,11 @@ namespace ABC_Car_Traders
                 // Login failed
                 MessageBox.Show("Invalid email or password.", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void textPassword_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

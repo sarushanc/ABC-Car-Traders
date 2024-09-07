@@ -11,6 +11,8 @@ namespace ABC_Car_Traders
         {
             InitializeComponent();
             admin = new Admin { Username = "admin", Password = "password" };
+
+            textBox2.UseSystemPasswordChar = true;
         }
 
         private void AdminLoginForm_Load(object sender, EventArgs e)
@@ -36,6 +38,11 @@ namespace ABC_Car_Traders
             {
                 MessageBox.Show("Invalid credentials");
             }
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
